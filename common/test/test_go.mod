@@ -1,0 +1,1 @@
+contenido go mod único

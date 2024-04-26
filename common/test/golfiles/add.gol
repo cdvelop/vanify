@@ -1,0 +1,24 @@
+package module_medical_history
+
+import (
+	"github.com/cdvelop/input"
+	"github.com/cdvelop/model"
+)
+
+func Add(h *model.MainHandler, options ...string) (*model.Module, error) {
+
+	module = &model.Module{
+		ModuleName: "medicalhistory",
+		Title:      "Ficha Paciente",
+	}
+
+	var inputs = []*model.Input{
+		unixid.InputPK(),
+		input.Text(),
+		input.TextArea(),
+		input.Date(),
+		input.Hour(options...),
+	}
+
+	return module, nil
+}

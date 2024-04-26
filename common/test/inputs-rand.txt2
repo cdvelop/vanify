@@ -1,0 +1,51 @@
+func (c *Client) buildObject(options ...string) {
+
+	fields := []model.Field{
+		{Name: "staff_area", Legend: "Area", Input: input.CheckBox(Credentials{})},
+		{Name: "id_" + c.ModuleName, Legend: "Id", Input: unixid.InputPK()},
+	}
+
+	doc := model.Field{Name: c.ModuleName + "_run", Unique: true, Legend: "Run", Input: input.Rut()}
+
+	for _, opt := range options {
+		switch opt {
+		case "dni":
+			doc = model.Field{Name: c.ModuleName + "_run", Unique: true, Legend: "Run o Dni", Input: input.Rut("dni-mode")}
+		}
+	}
+
+	fields = append(fields,
+		doc,
+		model.Field{Name: c.ModuleName + "_name", Legend: "Nombre y Apellido(s)", Input: input.TextOnly()},
+	)
+
+	for _, opt := range options {
+		switch opt {
+
+		case "birthday":
+			fields = append(fields, model.Field{Name: c.ModuleName + "_birthday", Legend: "Edad", Input: input.DateAge()})
+		}
+	}
+
+	fields = append(fields,
+		model.Field{Name: c.ModuleName + "_contact", Legend: "Datos Contacto", Input: input.TextArea()},
+		model.Field{Name: c.ModuleName + "_gender", Legend: "Genero", Input: input.RadioGenero()},
+		model.Field{Name: c.ModuleName + "_address", Legend: "Dirección", Input: input.TextArea()},
+	)
+
+	c.object = &model.Object{
+		Name:           c.ModuleName,
+		PrincipalFieldsName: []string{c.ModuleName + "_name"},
+		Fields:         fields,
+		BackendHandler: model.BackendHandler{
+			CreateApi: nil,
+			ReadApi:   nil,
+			FileApi:   nil,
+			UpdateApi: nil,
+			DeleteApi: nil,
+		},
+	}
+
+	c.object.AddModule(c.Module)
+
+}

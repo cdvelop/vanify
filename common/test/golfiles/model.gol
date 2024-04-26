@@ -1,0 +1,12 @@
+package module_medical_history
+
+type medicalhistory struct {
+	id_medicalhistory string `Legend:"Medical History Id" Input:"Pk"`
+	id_patient        string `Legend:"Patient Id" Input:"Pk"`
+	staff_id          string `Legend:"Staff Id" Input:"Pk"`
+	reason            string `Legend:"Motivo (Consulta, Servicio o Procedimiento)" Input:"Text" TextField:"ok"`
+	diagnostic        string `Legend:"Diagnostico (Descripción)" Input:"TextArea"`
+	prescription      string `Legend:"Prescripción (Conclusion)" Input:"TextArea"`
+	day_attention     string `Legend:"Dia Atención" Input:"Date"`
+	hour_attention    string `Legend:"Hora" Input:"Hour"`
+}

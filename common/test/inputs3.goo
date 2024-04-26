@@ -1,0 +1,6 @@
+fields = append(fields,
+	doc,
+	model.Field{Name: m.name + "_contact", Legend: "No Teléfono", Input: input.Phone()},
+	model.Field{Name: m.name + "_gender", Legend: "Genero", Input: input.RadioGenero()},
+	model.Field{Name: m.name + "_address", Legend: "Dirección", Input: input.TextArea()},
+)

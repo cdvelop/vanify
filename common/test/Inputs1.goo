@@ -1,0 +1,3 @@
+fields = append(fields,
+	model.Field{Name: m.name + "_contact", Legend: "No Teléfono", Input: input.Phone()},
+)
