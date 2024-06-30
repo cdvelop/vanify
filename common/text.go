@@ -7,11 +7,12 @@ import (
 
 // ej: index.html", "info_id"
 // static\main.js", "js\code.js"
-func TextExists(filePath string, textSearchInContent string) int {
+func TextCount(filePath string, textSearchInContent string) int {
 	file_content, err := os.ReadFile(filePath)
 	if err != nil {
 		return 0
 	}
+
 	string_content := string(file_content)
 	TextMinify(&string_content)
 

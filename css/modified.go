@@ -9,8 +9,8 @@ import (
 	"github.com/cdvelop/vanify/common"
 )
 
-func (h *handler) FileWasModifiedOnDisk(filePath string) error {
-	const this = "FileWasModifiedOnDisk Css "
+func (h *handler) UpdateFileOnDisk(filePath string) error {
+	const e = "UpdateFileOnDisk Css "
 	if filePath == "" {
 		return nil
 	}
@@ -21,23 +21,24 @@ func (h *handler) FileWasModifiedOnDisk(filePath string) error {
 	//1- read file content from filePath
 	content, err := os.ReadFile(filePath)
 	if err != nil {
-		return errors.New(this + err.Error())
+		return errors.New(e + err.Error())
 	}
 
-	h.LoadMemoryContent(filePath, content)
+	h.UpdateFileContentInMemory(filePath, content)
 
-	h.buf.Reset()
+	h.buf.Reset() // update and join content files
 	for _, f := range h.files {
 		h.buf.Write(f.content)
 	}
 
-	// fmt.Println("4- >>> escribiendo archivos app.css y style.css")
-	if err := h.CssMinify(&h.buf); err != nil {
-		return errors.New(this + err.Error())
+	if err := h.Minify(&h.buf); err != nil {
+		return errors.New(e + err.Error())
 	}
 
-	if err := common.FileWrite(h.CssFilePath, h.buf); err != nil {
-		return errors.New(this + err.Error())
+	// fmt.Println("escribiendo", h.buf.String())
+
+	if err := common.FileWrite(h.FilePath, h.buf); err != nil {
+		return errors.New(e + err.Error())
 	}
 
 	return nil

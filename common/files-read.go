@@ -8,7 +8,7 @@ import (
 )
 
 type out interface {
-	LoadMemoryContent(newPath string, content []byte)
+	UpdateFileContentInMemory(newPath string, content []byte)
 }
 
 func ReadAssets(Dir string, Html, Css, Js, Svg out) error {
@@ -41,19 +41,19 @@ func ReadAssets(Dir string, Html, Css, Js, Svg out) error {
 
 			case ".html":
 				if Html != nil {
-					Html.LoadMemoryContent(newPath, scanner.Bytes())
+					Html.UpdateFileContentInMemory(newPath, scanner.Bytes())
 				}
 			case ".css":
 				if Css != nil {
-					Css.LoadMemoryContent(newPath, scanner.Bytes())
+					Css.UpdateFileContentInMemory(newPath, scanner.Bytes())
 				}
 			case ".js":
 				if Js != nil {
-					Js.LoadMemoryContent(newPath, scanner.Bytes())
+					Js.UpdateFileContentInMemory(newPath, scanner.Bytes())
 				}
 			case ".svg":
 				if Svg != nil {
-					Svg.LoadMemoryContent(newPath, scanner.Bytes())
+					Svg.UpdateFileContentInMemory(newPath, scanner.Bytes())
 				}
 			}
 		}

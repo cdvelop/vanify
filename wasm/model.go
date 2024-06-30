@@ -6,8 +6,17 @@ type handler struct {
 	buildDirectory            string
 	MainGoFilePathToBuildWasm string // ej: ./project/wasm/main.go
 	WasmFileOutPath           string // ej: ./project/cmd/public/static/main.wasm
-	wasm_build                bool
+	wasmProjectType           bool
 
-	wasmFileName string
-	wasmImportJS string
+	wasmFileName       string
+	wasmExecJsPathFile string
+	wasmImportJS       []byte
+
+	gomodExist bool
+
+	flags
+}
+
+type flags interface {
+	Flags() string
 }

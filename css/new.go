@@ -5,11 +5,11 @@ import (
 	"path/filepath"
 
 	"github.com/cdvelop/vanify/common"
-	"github.com/cdvelop/vanify/compiler/minify"
-	min "github.com/cdvelop/vanify/compiler/minify/css"
+	"github.com/cdvelop/vanify/pkg/minify"
+	min "github.com/cdvelop/vanify/pkg/minify/css"
 )
 
-// publicCssDirectory ej: ./project/cmd/public/static
+// publicCssDirectory ej: ./user/project/build/public/assets
 func New(publicCssDirectory string) *handler {
 
 	err := common.CheckDirectories(publicCssDirectory)
@@ -22,7 +22,7 @@ func New(publicCssDirectory string) *handler {
 
 	return &handler{
 		buildDirectory:  publicCssDirectory,
-		CssFilePath:     filepath.Join(publicCssDirectory, "style.css"),
+		FilePath:        filepath.Join(publicCssDirectory, "style.css"),
 		registeredFiles: map[string]*file{},
 		files:           []*file{},
 		buf:             bytes.Buffer{},

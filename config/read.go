@@ -3,8 +3,6 @@ package config
 import (
 	"os"
 	"path/filepath"
-
-	"gopkg.in/yaml.v3"
 )
 
 func ReadFile() (*Config, error) {
@@ -30,11 +28,11 @@ func ReadFile() (*Config, error) {
 	}
 	defer file.Close()
 
-	decoder := yaml.NewDecoder(file)
-	err = decoder.Decode(conf)
-	if err != nil {
-		return nil, err
-	}
+	// decoder := yaml.NewDecoder(file)
+	// err = decoder.Decode(conf)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	// fmt.Println("config:", conf)
 

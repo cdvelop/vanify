@@ -2,16 +2,19 @@ package wasm
 
 import (
 	"path/filepath"
+
+	"github.com/cdvelop/vanify/gomod"
 )
 
 // rootDirectory ej: ./home/user/project
-func New(rootDirectory string) *handler {
+func New(rootDirectory string, f flags) *handler {
 
 	h := &handler{
-		rootDirectory:  rootDirectory,
-		tinyGoCompiler: false,
-		wasm_build:     false,
-		wasmFileName:   "main.wasm",
+		rootDirectory:   rootDirectory,
+		tinyGoCompiler:  false,
+		wasmProjectType: false,
+		wasmFileName:    "main.wasm",
+		flags:           f,
 	}
 
 	h.MainGoFilePathToBuildWasm = filepath.Join(rootDirectory, "wasm", "main.go")
@@ -20,7 +23,13 @@ func New(rootDirectory string) *handler {
 
 	h.WasmFileOutPath = filepath.Join(h.buildDirectory, h.wasmFileName)
 
-	h.webAssemblyCheck()
+	if err := h.webAssemblyCheck(); err != nil {
+		panic(err)
+	}
+
+	if _, err := gomod.Exist(rootDirectory); err == nil {
+		h.gomodExist = true
+	}
 
 	return h
 }

@@ -59,14 +59,10 @@ los módulos pueden tener cualquier nombre.
 
 la lectura de directorios para compilar es en el mismo orden que tienen los paquetes en *go.mod* por ende el paquete que contiene el tema principal de tu proyecto (css,JavaScript y pagina de inicio index.html) debe estar al principio como se muestra en el ejemplo **"htmlTheme"**
 
-## * donde vanify buscara por defecto los directorios de los módulos?
+## * directorios:
 
-```
- Home  
- └── User  
-     └── go      
-         └── src
-```
+![vanify-dir](docs/vanify-folders.svg)
+
 para cambiar el directorio de módulos edita el archivo **vanify.yml** solo se cambia a partir de *go* por *"TuDirectorio"*. home y user siempre se mantendrán ej:
 ```
  Home  
@@ -118,3 +114,11 @@ noLoad.css
 ### github.com/fsnotify
 ### github.com/chromedp
 ### github.com/tdewolff/minify
+### github.com/fstanis/screenresolution
+### github.com/lxn/win
+### github.com/dustin/go-humanize
+### github.com/mailru/easyjson
+### github.com/gobwas/
+### github.com/orisano/pixelmatch
+### github.com/ledongthuc/pdf
+### github.com/osharian/intern

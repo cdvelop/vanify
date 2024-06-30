@@ -25,7 +25,7 @@ func TestExist(t *testing.T) {
 	for testName, data := range testData {
 		t.Run(testName, func(t *testing.T) {
 
-			resp := common.TextExists(data.path, data.search)
+			resp := common.TextCount(data.path, data.search)
 
 			if resp != data.expect {
 				t.Fatalf("Para la entrada '%s', '%s' se esperaba '%v' pero se obtuvo '%v'", data.path, data.search, data.expect, resp)

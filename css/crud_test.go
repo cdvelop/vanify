@@ -2,6 +2,8 @@ package css_test
 
 import (
 	"bytes"
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/cdvelop/vanify/common"
@@ -13,37 +15,38 @@ func TestCrud(t *testing.T) {
 	publicFolder := "test/public/static"
 	h := css.New(publicFolder)
 
-	var content bytes.Buffer
+	content := bytes.Buffer{}
 	if _, err := content.Write([]byte(`body {
 		color: red;
 	}`)); err != nil {
 		t.Fatal(err)
 	}
 
+	// escribimos el archivo fuente en disco
 	filePath := "test/css/new.css"
 	if err := common.FileWrite(filePath, content); err != nil {
 		t.Fatal(err)
 	}
 
-	h.LoadMemoryContent(filePath, content.Bytes())
+	h.UpdateFileContentInMemory(filePath, content.Bytes())
 
 	// archivo modificado en disco
-	if err := h.FileWasModifiedOnDisk(filePath); err != nil {
+	if err := h.UpdateFileOnDisk(filePath); err != nil {
 		t.Fatal(err)
 	}
 
 	// minificar antes de comparar
-	if err := h.CssMinify(&content); err != nil {
+	if err := h.Minify(&content); err != nil {
 		t.Fatal(err)
 	}
 
 	// fmt.Println("CONTENIDO", content.String())
 	// verificar si el contenido se agrego
-	if resp := common.TextExists(h.CssFilePath, content.String()); resp == 0 {
-		t.Fatal("EN: "+h.CssFilePath+" NO EXISTE EL CONTENIDO: ", content.String())
+	if resp := strings.Count(h.FilePath, content.String()); resp == 0 {
+		t.Fatal("EN: "+h.FilePath+" NO EXISTE EL CONTENIDO: ", content.String())
 	}
 
-	// actualizamos contenido
+	// // actualizamos contenido
 	content.Reset()
 	content.WriteString(`body { color: green; }`)
 
@@ -51,25 +54,24 @@ func TestCrud(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if err := h.FileWasModifiedOnDisk(filePath); err != nil {
+	if err := h.UpdateFileOnDisk(filePath); err != nil {
 		t.Fatal(err)
 	}
 
-	// minificar antes de comparar
-	if err := h.CssMinify(&content); err != nil {
+	// // minificar antes de comparar
+	if err := h.Minify(&content); err != nil {
 		t.Fatal(err)
 	}
+	fmt.Println("contenido ok:", content.String())
 
-	// verificar si el nuevo contenido se agrego
-	resp := common.TextExists(h.CssFilePath, content.String())
+	// // verificar si el nuevo contenido se agrego
+	resp := strings.Count(h.FilePath, content.String())
 	if resp == 0 {
-		t.Fatal("EN: "+h.CssFilePath+" NO EXISTE EL CONTENIDO: ", content.String())
+		t.Fatal("EN: "+h.FilePath+" NO EXISTE EL CONTENIDO: ", content.String())
 	}
 
 	if resp > 1 {
-		t.Fatal("EN: "+h.CssFilePath+" ESTA REPETIDO: ", content.String())
+		t.Fatal("EN: "+h.FilePath+" ESTA REPETIDO: ", content.String())
 	}
-
-	// fmt.Println("respuesta", resp)
 
 }

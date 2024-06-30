@@ -5,13 +5,11 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-
-	"github.com/cdvelop/vanify/ldflags"
 )
 
-func (h *handler) FileWasModifiedOnDisk(event_name string) error {
-	const this = "FileWasModifiedOnDisk error "
-	if !h.wasm_build {
+func (h *handler) UpdateFileOnDisk(event_name string) error {
+	const this = "UpdateFileOnDisk error "
+	if !h.wasmProjectType {
 		return nil
 	}
 
@@ -19,14 +17,14 @@ func (h *handler) FileWasModifiedOnDisk(event_name string) error {
 		fmt.Println("Compilando WASM..." + event_name)
 	}
 
-	// fmt.Println("c.FrontBuildRootFolder:", c.FrontBuildRootFolder)
-
 	// Ejecutar go mod tidy en el directorio del proyecto
-	tidyCmd := exec.Command("go", "mod", "tidy")
-	tidyCmd.Dir = h.rootDirectory
-	tidyOutput, tidyErr := tidyCmd.CombinedOutput()
-	if tidyErr != nil {
-		return errors.New(this + "al ejecutar 'go mod tidy': " + tidyErr.Error() + " " + string(tidyOutput))
+	if h.gomodExist {
+		tidyCmd := exec.Command("go", "mod", "tidy")
+		tidyCmd.Dir = h.rootDirectory
+		tidyOutput, tidyErr := tidyCmd.CombinedOutput()
+		if tidyErr != nil {
+			return errors.New(this + "al ejecutar 'go mod tidy': " + tidyErr.Error() + " " + string(tidyOutput))
+		}
 	}
 
 	var cmd *exec.Cmd
@@ -36,9 +34,9 @@ func (h *handler) FileWasModifiedOnDisk(event_name string) error {
 	// delete last file
 	os.Remove(h.WasmFileOutPath)
 
-	flags, err := ldflags.Add(h.GetTwoPublicKeysWasmClientAndGoServer())
-	if err != "" {
-		return errors.New(this + err)
+	var flags string
+	if h.flags != nil {
+		flags = h.Flags()
 	}
 
 	// log.Println("*** MainGoFilePathToBuildWasm: ", MainGoFilePathToBuildWasm)

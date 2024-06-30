@@ -3,20 +3,18 @@ package css
 import (
 	"bytes"
 
-	"github.com/cdvelop/vanify/compiler/minify"
+	"github.com/cdvelop/vanify/pkg/minify"
 )
 
 type handler struct {
 	buildDirectory string
-	CssFilePath    string // ej: ./project/cmd/public/static/style.css
+	FilePath       string // ej: ./project/cmd/public/static/style.css
 
 	registeredFiles map[string]*file
 
 	files []*file
-
-	buf bytes.Buffer
-
-	min *minify.M
+	buf   bytes.Buffer
+	min   *minify.M
 }
 
 type file struct {
